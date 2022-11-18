@@ -52,8 +52,20 @@ function App() {
         }
       })
       const data = await response.json()
-      console.log(data)
+      fetchMovie()
 
+    } catch (err) {
+      console.log(err)
+    }
+
+  }, [])
+
+  const deleteMovieHandler = useCallback(async (id) => {
+    try {
+      await fetch(`https://crud-d96e0-default-rtdb.firebaseio.com/movies/${id}.json`, {
+        method: 'DELETE'
+      })
+      fetchMovie()
     } catch (err) {
       console.log(err)
     }
@@ -74,7 +86,7 @@ function App() {
           <span class="sr-only">Loading...</span>
         </div>
 
-          : <MoviesList movies={movieData} />}
+          : <MoviesList deleteMovie={deleteMovieHandler} movies={movieData} />}
         {!isLoading && error && <p>{error}</p>}
 
       </section>

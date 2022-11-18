@@ -4,12 +4,14 @@ import Movie from './Movie';
 import classes from './MoviesList.module.css';
 
 const MovieList = (props) => {
-  console.log('Movie list called')
   return (
     <ul className={classes['movies-list']}>
       {props.movies.map((movie) => (
         <Movie
+
           key={movie.id}
+          id={movie.id}
+          deleteMovie={props.deleteMovie}
           title={movie.title}
           releaseDate={movie.releaseDate}
           openingText={movie.openingText}
