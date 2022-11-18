@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import MoviesList from './components/MoviesList';
 import AddMovie from './components/AddMovie';
 import './App.css';
@@ -42,9 +42,9 @@ function App() {
   useEffect(() => {
     fetchMovie()
   }, [fetchMovie])
-  function addMovieHandler(movie) {
+  const addMovieHandler = useCallback((movie) => {
     console.log(movie);
-  }
+  }, [])
 
 
   return (
