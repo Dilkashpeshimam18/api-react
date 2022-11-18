@@ -12,23 +12,22 @@ function App() {
     setIsLoading(true)
     setError(null)
     try {
-      const response = await fetch('https://swapi.dev/api/films/', {
-        method: 'GET'
-      })
+      const response = await fetch('https://crud-d96e0-default-rtdb.firebaseio.com/movies.json')
       if (!response.ok) {
         throw new Error('Something went wrong...Retrying')
       }
       const data = await response.json()
+      const loadedData = []
+      for (let key in data) {
+        loadedData.push({
+          id: key,
+          title: data[key].title,
+          openingText: data[key].openingText,
+          releaseDate: data[key].releaseDate
 
-      let transformedData = data.results.map((data) => {
-        return {
-          id: data.episode_id,
-          title: data.title,
-          openingText: data.opening_crawl,
-          releaseDate: data.release_data
-        }
-      })
-      setMovieData(transformedData)
+        })
+      }
+      setMovieData(loadedData)
     } catch (err) {
       console.log(err)
       setError(err.message)
@@ -42,8 +41,23 @@ function App() {
   useEffect(() => {
     fetchMovie()
   }, [fetchMovie])
-  const addMovieHandler = useCallback((movie) => {
-    console.log(movie);
+
+  const addMovieHandler = useCallback(async (movie) => {
+    try {
+      const response = await fetch('https://crud-d96e0-default-rtdb.firebaseio.com/movies.json', {
+        method: 'POST',
+        body: JSON.stringify(movie),//convert js object or array into json format
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      const data = await response.json()
+      console.log(data)
+
+    } catch (err) {
+      console.log(err)
+    }
+
   }, [])
 
 
